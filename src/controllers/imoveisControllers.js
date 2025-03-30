@@ -32,3 +32,21 @@ exports.buscarImovelPorId = async (req, res) => {
       res.status(500).json({ success: false, error: 'Erro no servidor ao buscar imóvel.' });
     }
   };
+
+// @desc    Criar um novo imóvel
+// @route   POST /api/imoveis
+// @access  Private (Exemplo: futuramente adicionar autenticação)
+exports.criarImovel = async (req, res) => {
+    try {
+      const novoImovel = await Imovel.create(req.body);
+      res.status(201).json({ success: true, data: novoImovel });
+    } catch (error) {
+      console.error("Erro ao criar imóvel:", error);
+      if (error.name === 'ValidationError') {
+          // As mensagens de erro virão baseadas nos requisitos do modelo
+          const messages = Object.values(error.errors).map(val => val.message);
+          return res.status(400).json({ success: false, error: messages });
+      }
+      res.status(500).json({ success: false, error: 'Erro no servidor ao criar imóvel.' });
+    }
+  };

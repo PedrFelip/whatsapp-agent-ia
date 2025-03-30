@@ -1,11 +1,11 @@
 const express = require('express');
-const { buscarImoveis, buscarImovelPorId } = require('../controllers/imoveisControllers'); // Importa as funções do controller
+const { buscarImoveis, buscarImovelPorId, criarImovel } = require('../controllers/imoveisControllers'); // Importa as funções do controller
 const router = express.Router();
 
 // Define as rotas para os imóveis
 router.route('/')
   .get(buscarImoveis)   // GET /api/imoveis -> buscar todos
-  .post();  // POST /api/imoveis -> criar novo
+  .post(criarImovel);  // POST /api/imoveis -> criar novo
 
 router.route('/:id')
   .get(buscarImovelPorId)    // GET /api/imoveis/:id -> buscar por ID
