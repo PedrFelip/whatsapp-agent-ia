@@ -1,0 +1,1 @@
+const Imovel = require('src/models/imoveis.js');
