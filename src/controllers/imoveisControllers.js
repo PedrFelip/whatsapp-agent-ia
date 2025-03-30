@@ -50,3 +50,48 @@ exports.criarImovel = async (req, res) => {
       res.status(500).json({ success: false, error: 'Erro no servidor ao criar imóvel.' });
     }
   };
+
+// @desc    Atualizar um imóvel pelo ID
+// @route   PUT /api/imoveis/:id
+// @access  Private
+exports.atualizarImovel = async (req, res) => {
+    try {
+      const imovelAtualizado = await Imovel.findByIdAndUpdate(req.params.id, req.body, {
+        new: true, // Retorna o modificado
+        runValidators: true, // Roda as validações do modelo na atualização
+      });
+      if (!imovelAtualizado) {
+        return res.status(404).json({ success: false, error: 'Imóvel não encontrado para atualização.' });
+      }
+      res.status(200).json({ success: true, data: imovelAtualizado });
+    } catch (error) {
+      console.error("Erro ao atualizar imóvel:", error);
+       if (error.name === 'ValidationError') {
+          const messages = Object.values(error.errors).map(val => val.message);
+          return res.status(400).json({ success: false, error: messages });
+      }
+       if (error.kind === 'ObjectId') {
+          return res.status(400).json({ success: false, error: 'ID do imóvel inválido.' });
+      }
+      res.status(500).json({ success: false, error: 'Erro no servidor ao atualizar imóvel.' });
+    }
+  };
+  
+  // @desc    Deletar um imóvel pelo ID
+  // @route   DELETE /api/imoveis/:id
+  // @access  Private
+  exports.removerImovel = async (req, res) => {
+    try {
+      const imovelDeletado = await Imovel.findByIdAndDelete(req.params.id);
+      if (!imovelDeletado) {
+        return res.status(404).json({ success: false, error: 'Imóvel não encontrado para exclusão.' });
+      }
+      res.status(200).json({ success: true, data: {} }); // Retorna sucesso sem dados
+    } catch (error) {
+      console.error("Erro ao deletar imóvel:", error);
+      if (error.kind === 'ObjectId') {
+          return res.status(400).json({ success: false, error: 'ID do imóvel inválido.' });
+      }
+      res.status(500).json({ success: false, error: 'Erro no servidor ao deletar imóvel.' });
+    }
+  };
