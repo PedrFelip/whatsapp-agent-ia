@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Define as rotas para os imóveis
 router.route('/')
-  .get()   // GET /api/imoveis -> buscar todos
+  .get(buscarImoveis)   // GET /api/imoveis -> buscar todos
   .post();  // POST /api/imoveis -> criar novo
 
 router.route('/:id')
