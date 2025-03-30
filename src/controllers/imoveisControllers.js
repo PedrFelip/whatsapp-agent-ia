@@ -5,7 +5,7 @@ const Imovel = require('src/models/imoveis.js');
 // @access  Public
 exports.buscarImoveis = async (req, res) => {
     try {
-      // Para Fazer: Implementar filtros mais avançados (preco, tipo, localizacao, etc.) 
+      // Para Fazer: Implementar filtros mais avançados (preco, tipo, localizacao, etc.)
       const imoveis = await Imovel.find(req.query);
       res.status(200).json({ success: true, count: imoveis.length, data: imoveis });
     } catch (error) {
@@ -76,7 +76,7 @@ exports.atualizarImovel = async (req, res) => {
       res.status(500).json({ success: false, error: 'Erro no servidor ao atualizar imóvel.' });
     }
   };
-  
+
   // @desc    Deletar um imóvel pelo ID
   // @route   DELETE /api/imoveis/:id
   // @access  Private
