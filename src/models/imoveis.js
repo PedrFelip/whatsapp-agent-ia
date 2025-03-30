@@ -64,12 +64,25 @@ const ImovelModel = new mongoose.Schema({
     enum: ['Disponível', 'Vendido', 'Alugado', 'Em Lançamento', 'Em Construção'],
     default: 'Disponível',
   },
-});
+  criadoEm: {
+      type: Date,
+      default: Date.now
+  }
+}, { timestamps: true }); // Adiciona createdAt e updatedAt automaticamente
 
 // Indexes para otimizar consultas
 ImovelModel.index({ 'endereco.cidade': 1, 'endereco.estado': 1 });
 ImovelModel.index({ preco: 1 });
 ImovelModel.index({ tipo: 1 });
 
-// Cria e exporta o modelo 'Imovel' 
+// Novo index para buscar por texto util para pesquisa e contexto para IA
+ImovelModel.index({
+    tituloAnuncio: 'text',
+    descricao: 'text',
+    'endereco.cidade': 'text',
+    'endereco.bairro': 'text',
+    nomeEmpreendimento: 'text'
+}, { default_language: 'portuguese' });
+
+// Cria e exporta o modelo 'Imovel'
 module.exports = mongoose.model('Imovel', ImovelModel);
