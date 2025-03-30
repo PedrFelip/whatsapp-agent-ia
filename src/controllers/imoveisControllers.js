@@ -13,3 +13,22 @@ exports.buscarImoveis = async (req, res) => {
       res.status(500).json({ success: false, error: 'Erro no servidor ao buscar imóveis.' });
     }
   };
+
+// @desc    Buscar um imóvel específico pelo ID
+// @route   GET /api/imoveis/:id
+// @access  Public
+exports.buscarImovelPorId = async (req, res) => {
+    try {
+      const imovel = await Imovel.findById(req.params.id);
+      if (!imovel) {
+        return res.status(404).json({ success: false, error: 'Imóvel não encontrado.' });
+      }
+      res.status(200).json({ success: true, data: imovel });
+    } catch (error) {
+      console.error("Erro ao buscar imóvel por ID:", error);
+      if (error.kind === 'ObjectId') {
+          return res.status(400).json({ success: false, error: 'ID do imóvel inválido.' });
+      }
+      res.status(500).json({ success: false, error: 'Erro no servidor ao buscar imóvel.' });
+    }
+  };
