@@ -72,8 +72,9 @@ exports.tratamentoChat = async (req, res) => {
 
         // Chamada da API OpenAI
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o-mini",
             messages: messages,
+            max_tokens: 200
         });
 
         const aiResponse = completion.choices[0].message.content;
